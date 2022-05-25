@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./assets/favicon.ico">
+</head>
+<body>
+    <h1 class="heading">Drum Kit</h1>
+    <h2 class="subheading">latin style</h2>
+    <div class="keys">
+        <div class="key" data-key="65">
+            <kbd>A</kbd>
+            <span class="sound">mambo bell</span>
+        </div>
+        <div class="key" data-key="83">
+            <kbd>S</kbd>
+            <span class="sound">conga 1</span>
+        </div>
+        <div class="key" data-key="68">
+            <kbd>D</kbd>
+            <span class="sound">conga 2</span>
+        </div>
+        <div class="key" data-key="70">
+            <kbd>F</kbd>
+            <span class="sound">conga 3</span>
+        </div>
+        <div class="key" data-key="71">
+            <kbd>G</kbd>
+            <span class="sound">chacha bell</span>
+        </div>
+        <div class="key" data-key="72">
+            <kbd>H</kbd>
+            <span class="sound">bongo 1</span>
+        </div>
+        <div class="key" data-key="74">
+            <kbd>J</kbd>
+            <span class="sound">bongo 2</span>
+        </div>
+        <div class="key" data-key="75">
+            <kbd>K</kbd>
+            <span class="sound">block 1</span>
+        </div>
+        <div class="key" data-key="76">
+            <kbd>L</kbd>
+            <span class="sound">block 2</span>
+        </div>
+    </div>
+    <div class="mode"><button class="toggle" title="click to select mode">Dark mode</button></div>
+
+    <audio data-key="65" src="./assets/sound/00_MamboBell_SP_01.wav"></audio>
+    <audio data-key="83" src="./assets/sound/00_CongaLoSlide_SP_01.wav"></audio>
+    <audio data-key="68" src="./assets/sound/00_CongaLoOpenSlap_SP_01.wav"></audio>
+    <audio data-key="70" src="./assets/sound/00_CongaHiOpenSlap_SP_01.wav"></audio>
+    <audio data-key="71" src="./assets/sound/00_ChaChaBell_SP_01.wav"></audio>
+    <audio data-key="72" src="./assets/sound/00_BongoHiOpenSlap_SP_01.wav"></audio>
+    <audio data-key="74" src="./assets/sound/00_BongoBellHiOpen_SP_01.wav"></audio>
+    <audio data-key="75" src="./assets/sound/00_BlockLo_SP_01.wav"></audio>
+    <audio data-key="76" src="./assets/sound/00_BlockHi_SP_01.wav"></audio>
+
+
+    
+    <script>
+        function removeTransition(e) {
+            if (e.propertyName !== 'transform') return;
+             e.target.classList.remove('playing');
+        }
+
+        function playSound(e) {
+            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+            if (!audio) return;
+            key.classList.add('playing');
+            audio.currentTime = 0;
+            audio.play();
+        }
+
+        const keys = Array.from(document.querySelectorAll('.key'));
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+        window.addEventListener('keydown', playSound);
+       
+
+
+        keys.forEach( key => key.addEventListener('mousedown', playByMouseClick));
+
+        function playByMouseClick(e) {
+            const keyCode = this.getAttribute('data-key');
+	        const audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+            if (!audio) return;
+	        audio.currentTime = 0;
+	        audio.play();
+	        const key = document.querySelector(`.key[data-key="${keyCode}"]`);
+            key.classList.add('playing');
+        }
+
+        const toggle = document.querySelector('.toggle')
+        toggle.addEventListener('click', (e) => {
+    const html = document.querySelector('html')
+    if(html.classList.contains('dark')) {
+        html.classList.remove('dark')
+        e.target.innerHTML = 'Dark mode'
+    } else {
+        html.classList.add('dark')
+        e.target.innerHTML = 'Light mode'
+    }
+})
+
+        console.log(`Общая оценка: 30 баллов. 
+        Основной функционал (звук по нажатию кнопки на клавиатуре): 10 баллов.
+        Обязательный доп.функционал (звук при клике мышью): 10 баллов.
+        Доп. функционал на выбор (возможность переключать тёмную/светлую тему по нажатию на кнопку): 10 баллов.`)
+
+
+        
+    </script>
+</body>
+</html>
